@@ -12,23 +12,37 @@ import java.util.List;
 
 @RestController
 public class WelcomeController {
-  @Autowired
-  DogsRepository dogRepo;
-  @Autowired
-  DogService dogService;
 
-  @GetMapping("/")
-  public String getWelcome() {
-    return "Dogs API is up and running!";
+  @Autowired
+  DogService dogsService;
+
+  @GetMapping("/dogsAll")
+    public List <Dog> getAllDogs() {
+      return dogsService.getAllDogs();
+    }
+  @GetMapping("/getName/{name}")
+  public Dog findByName(@PathVariable String name){
+    return dogsService.getDogByName(name);
   }
-  @GetMapping("/dogs")
-  public Dog getDogByName(){
-    return dogService.getDogByName("Kaya");
+  @GetMapping("/gotDogID/{id}")
+  public Dog findById(@PathVariable long id){
+    return dogsService.getDogById(id);
+  }
+  @GetMapping("/getNoDogs")
+  public Long getNoDogs() {
+    return dogsService.getNoOfDogs();
   }
 
-  @GetMapping("/dogs/getName")
-  public Dog findByName(){
-    return dogService.getDogByName("Kaya");
+  @GetMapping("/deleteDogID/{id}")
+  public boolean deleteDog(@PathVariable long id){
+    return dogsService.removeDog(id);
+  }
+
+  @GetMapping("/addDog/{name}")
+  public Dog addDog(@PathVariable String name) {
+    Dog dog = new Dog();
+    dog.setName(name);
+    return dogsService.addDog(dog);
   }
 
 }
